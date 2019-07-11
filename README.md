@@ -88,7 +88,7 @@ $ kubectl delete ns canary-deploy
 ```
 
 ## canary by header
-The yaml files are in the `canary-weight` directory. 
+The yaml files are in the `canary-header` directory. 
 Write the test script as follow:
 ```bash
 #! /bin/bash
