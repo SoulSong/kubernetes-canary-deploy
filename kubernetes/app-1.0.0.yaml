@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service-dm
+  namespace: canary-deploy
+spec:
+  selector:
+    matchLabels:
+      app: app-service
+      version: 1.0.0
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app-service
+        version: 1.0.0
+    spec:
+      containers:
+        - name: app-service
+          image: local-dtr.com/kubernetes-canary-deploy:Develop
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: app.version
+              value: 1.0.0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service-svc
+  namespace: canary-deploy
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: app-service
+    version: 1.0.0
+  sessionAffinity: None
+  type: ClusterIP

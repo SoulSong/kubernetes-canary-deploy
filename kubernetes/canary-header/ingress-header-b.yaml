@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app-ingress-b
+  namespace: canary-deploy
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-by-header: "TAG"
+    nginx.ingress.kubernetes.io/canary-by-header-value: "b"
+spec:
+  rules:
+    - host: shf.boot.com
+      http:
+        paths:
+          - path: /app-service/?(.*)
+            backend:
+              serviceName: app-service-svc2
+              servicePort: 80
+
